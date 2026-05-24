@@ -1,0 +1,17 @@
+.env
+uploads/
+!uploads/.gitkeep  
+vector_db/
+ambitio_ai.db
+*.sqlite3
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+.env/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
