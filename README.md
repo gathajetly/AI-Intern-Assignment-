@@ -325,14 +325,6 @@ The system was evaluated on:
 
 ---
 
-# ⚖️ Assumptions
-
-- Uploaded documents are in English
-- Legal files contain extractable textual content
-- Gemini/OpenAI APIs are available and configured
-- ChromaDB storage is locally accessible
-
----
 
 # 🔄 Tradeoffs
 
@@ -344,16 +336,157 @@ The system was evaluated on:
 | OCR fallback | Improved extraction but slower processing |
 
 ---
+# 📊 Evaluation Approach and Results
 
-# 🔮 Future Improvements
+The system was evaluated across multiple stages of the legal document processing pipeline to measure the effectiveness of:
+- OCR extraction
+- semantic retrieval
+- grounded draft generation
+- downstream usability of outputs
 
-- Multi-user authentication
-- PostgreSQL integration
-- Redis caching
-- Async background processing
-- Fine-tuned legal LLM
-- Citation-aware drafting
-- Deployment on AWS/GCP/Azure
-- Advanced legal clause extraction
+The evaluation focused not only on technical correctness, but also on whether the extracted information was practically usable for legal drafting workflows.
+
+---
+
+# 🧪 Evaluation Methodology
+
+The evaluation process was divided into four major components:
+
+| Component | Objective |
+|---|---|
+| Document Processing | Evaluate handling of noisy/scanned legal files |
+| OCR & Extraction | Measure quality of extracted text |
+| Retrieval Quality | Evaluate semantic relevance of retrieved evidence |
+| Draft Generation | Assess factual grounding and usefulness of generated drafts |
+
+---
+
+# 1️⃣ Document Processing Evaluation
+
+The system was tested on:
+- scanned PDFs
+- noisy text files
+- partially structured legal documents
+- lease agreements
+- notices and contracts
+
+## Evaluation Criteria
+
+- Ability to process low-quality inputs
+- OCR fallback reliability
+- extraction completeness
+- downstream usability of extracted text
+
+## Result
+
+✅ Successfully handled messy and semi-structured legal documents with minimal manual preprocessing.
+
+---
+
+# 2️⃣ OCR & Text Extraction Evaluation
+
+OCR quality was evaluated through manual inspection of extracted outputs.
+
+## Metrics Considered
+
+- readability of extracted text
+- preservation of legal clauses
+- sentence completeness
+- reduction of extraction noise
+
+## Observations
+
+- PyMuPDF performed well on digitally generated PDFs.
+- OCR fallback improved extraction for scanned/image-based documents.
+- Minor OCR inconsistencies were observed in heavily distorted scans.
+
+## Result
+
+✅ Generated sufficiently clean and usable text for downstream semantic retrieval and draft generation tasks.
+
+---
+
+# 3️⃣ Semantic Retrieval Evaluation
+
+The retrieval system was evaluated based on how accurately it returned evidence relevant to the user query.
+
+## Evaluation Method
+
+- Queries were manually tested against uploaded legal documents.
+- Retrieved chunks were inspected for semantic relevance.
+- Relevance scores were compared qualitatively.
+
+## Example Query
+
+```text
+Summarize notice violations in the lease agreement
+```
+
+## Example Retrieved Evidence
+
+```json
+[
+  {
+    "chunk_id": "chunk_01",
+    "text_segment": "The tenant failed to provide the required 30-day notice before vacating.",
+    "relevance_score": 0.89
+  }
+]
+```
+
+## Observations
+
+- Semantic embeddings improved retrieval accuracy over keyword matching.
+- ChromaDB efficiently returned contextually relevant evidence chunks.
+- Retrieval grounding reduced hallucinated outputs during generation.
+
+## Result
+
+✅ High semantic relevance observed for most legal information retrieval tasks.
+
+---
+
+# 4️⃣ Draft Generation Evaluation
+
+Draft quality was evaluated based on:
+- factual grounding
+- coherence
+- legal phrasing quality
+- consistency with retrieved evidence
+
+## Evaluation Method
+
+Generated drafts were manually compared against:
+- source documents
+- retrieved evidence chunks
+- expected legal summaries
+
+## Example Generated Draft
+
+```text
+The tenant vacated the premises without complying with the contractual requirement of providing a 30-day written notice. The lease agreement explicitly mandated prior written notice before termination.
+```
+
+## Observations
+
+- Grounded retrieval significantly reduced unsupported legal statements.
+- Drafts maintained coherence and contextual relevance.
+- RAG-based prompting improved factual consistency.
+
+## Result
+
+✅ Generated drafts were contextually grounded and usable for legal summarization workflows.
+
+---
+
+# 📈 Overall Results Summary
+
+| Evaluation Area | Result |
+|---|---|
+| Handling Messy Inputs | Successful |
+| OCR Extraction Quality | Good |
+| Semantic Retrieval Relevance | High |
+| Draft Grounding | Strong |
+| Downstream Usability | Effective |
 
 ---
